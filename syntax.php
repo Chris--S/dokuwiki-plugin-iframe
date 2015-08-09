@@ -17,18 +17,6 @@ require_once(DOKU_PLUGIN.'syntax.php');
  */
 class syntax_plugin_iframe extends DokuWiki_Syntax_Plugin {
 
-    function getInfo(){
-      return array(
-        'author' => 'Christopher Smith',
-        'email'  => 'chris@jalakai.co.uk',
-        'date'   => '2008-10-31',
-        'name'   => 'iframe Plugin',
-        'desc'   => 'Add an iframe containing the specified url
-                     syntax: {{url>http://www.somesite.com/somepage.htm [w,h]|alternate text}}',
-        'url'    => 'http://www.dokuwiki.org/plugin:iframe',
-      );
-    }
-
     function getType() { return 'substition'; }
     function getSort() { return 305; }
     function connectTo($mode) { $this->Lexer->addSpecialPattern('{{url>.*?}}',$mode,'plugin_iframe'); }
