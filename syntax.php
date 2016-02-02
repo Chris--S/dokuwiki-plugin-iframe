@@ -21,7 +21,7 @@ class syntax_plugin_iframe extends DokuWiki_Syntax_Plugin {
     function getSort() { return 305; }
     function connectTo($mode) { $this->Lexer->addSpecialPattern('{{url>.*?}}',$mode,'plugin_iframe'); }
 
-    function handle($match, $state, $pos, &$handler){
+    function handle($match, $state, $pos, Doku_Handler $handler){
         $match = substr($match, 6, -2);
         list($url, $alt)   = explode('|',$match,2);
         list($url, $param) = explode(' ',$url,2);
@@ -72,7 +72,7 @@ class syntax_plugin_iframe extends DokuWiki_Syntax_Plugin {
         return $opts;
     }
 
-    function render($mode, &$R, $data) {
+    function render($mode, Doku_Renderer $R, $data) {
         if($mode != 'xhtml') return false;
 
         if(!$data['url']){
