@@ -40,6 +40,7 @@ class syntax_plugin_iframe extends DokuWiki_Syntax_Plugin {
                     'scroll' => true,
                     'border' => true,
                     'align'  => false,
+                    'fullscreen' => false,
                 );
 
         // handle size parameters
@@ -65,6 +66,9 @@ class syntax_plugin_iframe extends DokuWiki_Syntax_Plugin {
         if(preg_match('/no(frame)?border/',$param)){
             $opts['border'] = false;
         }
+        if(preg_match('/fullscreen/',$param)){
+            $opts['fullscreen'] = true;
+        }
         if(preg_match('/(left|right)/',$param,$matches)){
             $opts['align'] = $matches[1];
         }
@@ -87,6 +91,7 @@ class syntax_plugin_iframe extends DokuWiki_Syntax_Plugin {
             if(!$data['scroll']) $opts['scrolling'] = 'no';
             if($data['align'])   $opts['align'] = $data['align'];
             $params = buildAttributes($opts);
+            if($data['fullscreen']) $params .= ' allowfullscreen';
             $R->doc .= "<iframe $params>".hsc($alt).'</iframe>';
         }
 
