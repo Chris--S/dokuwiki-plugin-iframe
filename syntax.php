@@ -68,6 +68,13 @@ class syntax_plugin_iframe extends DokuWiki_Syntax_Plugin {
         if(preg_match('/(left|right)/',$param,$matches)){
             $opts['align'] = $matches[1];
         }
+        $opts['attributes'] = [];
+        if(preg_match_all('/\w+=[\w;]+/',$param,$matches)){
+            foreach($matches[0] as $match) {
+                $attribute = explode("=", $match);
+                $opts['attributes'][] = $attribute;
+            }
+        }
 
         return $opts;
     }
@@ -86,6 +93,9 @@ class syntax_plugin_iframe extends DokuWiki_Syntax_Plugin {
             if(!$data['border']) $opts['frameborder'] = 0;
             if(!$data['scroll']) $opts['scrolling'] = 'no';
             if($data['align'])   $opts['align'] = $data['align'];
+            foreach ($data['attributes'] as $attribute) {
+                $opts[$attribute[0]] = $attribute[1];
+            }
             $params = buildAttributes($opts);
             $R->doc .= "<iframe $params>".hsc($alt).'</iframe>';
         }
