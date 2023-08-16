@@ -23,7 +23,7 @@ class syntax_plugin_iframe extends DokuWiki_Syntax_Plugin {
 
     function handle($match, $state, $pos, Doku_Handler $handler){
         $match = substr($match, 6, -2);
-        list($url, $alt)   = explode('|',$match,2);
+        list($url, $alt)   = array_pad(explode('|',$match,2), 2, null);
         list($url, $param) = explode(' ',$url,2);
 
         // javascript pseudo uris allowed?
@@ -45,13 +45,13 @@ class syntax_plugin_iframe extends DokuWiki_Syntax_Plugin {
         // handle size parameters
         $matches=array();
         if(preg_match('/\[?(\d+(em|%|pt|px)?)\s*([,xX]\s*(\d+(em|%|pt|px)?))?\]?/',$param,$matches)){
-            if($matches[4]){
-                // width and height was given
+            if(count($matches) > 3) {
+                   // width and height was given
                 $opts['width'] = $matches[1];
                 if(!$matches[2]) $opts['width'] .= 'px'; //default to pixel when no unit was set
                 $opts['height'] = $matches[4];
                 if(!$matches[5]) $opts['height'] .= 'px'; //default to pixel when no unit was set
-            }elseif($matches[2]){
+            }elseif (count($matches) > 1) {
                 // only height was given
                 $opts['height'] = $matches[1];
                 if(!$matches[2]) $opts['height'] .= 'px'; //default to pixel when no unit was set
@@ -87,7 +87,7 @@ class syntax_plugin_iframe extends DokuWiki_Syntax_Plugin {
             if(!$data['scroll']) $opts['scrolling'] = 'no';
             if($data['align'])   $opts['align'] = $data['align'];
             $params = buildAttributes($opts);
-            $R->doc .= "<iframe $params>".hsc($alt).'</iframe>';
+            $R->doc .= "<iframe $params>".(isset($alt) ? hsc($alt) : '').'</iframe>';
         }
 
         return true;
