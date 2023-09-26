@@ -5,10 +5,8 @@
  * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
  * @author     Christopher Smith <chris@jalakai.co.uk>
  */
- // must be run within Dokuwiki
-if(!defined('DOKU_INC')) die();
 
-if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
+ use dokuwiki\Extension\SyntaxPlugin;
 
 /**
  * All DokuWiki plugins to extend the parser/rendering mechanism
@@ -23,7 +21,7 @@ class syntax_plugin_iframe extends DokuWiki_Syntax_Plugin {
     function handle($match, $state, $pos, Doku_Handler $handler){
         $match = substr($match, 6, -2);
         list($url, $alt)   = array_pad(explode('|',$match,2), 2, null);
-        list($url, $param) = explode(' ',$url,2);
+        list($url, $param) = array_pad(explode(' ',$url,2), 2, null);
 
         // javascript pseudo uris allowed?
         if (!$this->getConf('js_ok') && substr($url,0,11) == 'javascript:'){
