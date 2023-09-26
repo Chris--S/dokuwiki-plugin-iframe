@@ -48,7 +48,7 @@ class syntax_plugin_iframe extends DokuWiki_Syntax_Plugin {
                 $opts['width'] = $matches[1];
                 if(!$matches[2]) $opts['width'] .= 'px'; //default to pixel when no unit was set
                 $opts['height'] = $matches[4];
-                if(!$matches[5]) $opts['height'] .= 'px'; //default to pixel when no unit was set
+                if(empty($matches[5])) $opts['height'] .= 'px'; //default to pixel when no unit was set
             }elseif (count($matches) > 1) {
                 // only height was given
                 $opts['height'] = $matches[1];
