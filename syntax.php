@@ -23,7 +23,7 @@ class syntax_plugin_iframe extends DokuWiki_Syntax_Plugin {
     function handle($match, $state, $pos, Doku_Handler $handler){
         $match = substr($match, 6, -2);
         list($url, $alt)   = array_pad(explode('|',$match,2), 2, null);
-        list($url, $param) = explode(' ',$url,2);
+        list($url, $param) = array_pad(explode(' ',$url,2), 2, '');
 
         // javascript pseudo uris allowed?
         if (!$this->getConf('js_ok') && substr($url,0,11) == 'javascript:'){
@@ -48,13 +48,13 @@ class syntax_plugin_iframe extends DokuWiki_Syntax_Plugin {
             if(count($matches) > 3) {
                 // width and height was given
                 $opts['width'] = $matches[1];
-                if(!$matches[2]) $opts['width'] .= 'px'; //default to pixel when no unit was set
+                if(empty($matches[2])) $opts['width'] .= 'px'; //default to pixel when no unit was set
                 $opts['height'] = $matches[4];
-                if(!$matches[5]) $opts['height'] .= 'px'; //default to pixel when no unit was set
+                if(empty($matches[5])) $opts['height'] .= 'px'; //default to pixel when no unit was set
             }elseif (count($matches) > 1) {
                 // only height was given
                 $opts['height'] = $matches[1];
-                if(!$matches[2]) $opts['height'] .= 'px'; //default to pixel when no unit was set
+                if(empty($matches[2])) $opts['height'] .= 'px'; //default to pixel when no unit was set
             }
         }
 
@@ -91,7 +91,7 @@ class syntax_plugin_iframe extends DokuWiki_Syntax_Plugin {
             if($data['align'])   $opts['align'] = $data['align'];
             $params = buildAttributes($opts);
             if($data['fullscreen']) $params .= ' allowfullscreen';
-            $R->doc .= "<iframe $params>".(isset($alt) ? hsc($alt) : '').'</iframe>';
+            $R->doc .= "<iframe $params>".($data['alt'] ? hsc($data['alt']) : '').'</iframe>';
         }
 
         return true;
